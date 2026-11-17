@@ -50,6 +50,9 @@ class VerifiedMixin:
     source_id: Mapped[str | None] = mapped_column(ForeignKey("sources.id"), nullable=True)
     verified_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     verified_by: Mapped[str | None] = mapped_column(String(36), nullable=True)
+    # Last staff member who changed the record. They cannot approve their own change.
+    edited_by: Mapped[str | None] = mapped_column(String(36), nullable=True)
+    review_note: Mapped[str | None] = mapped_column(Text, nullable=True)
 
 
 # ===================================================================== reference
@@ -424,6 +427,23 @@ class DataReport(Base, IdMixin, TimestampMixin):
     field: Mapped[str | None] = mapped_column(String(60))
     message: Mapped[str] = mapped_column(Text)
     status: Mapped[str] = mapped_column(String(20), default="new")
+
+
+class ChangeRequest(Base, IdMixin, TimestampMixin):
+    """A proposed edit to a PUBLISHED record. Students keep seeing the published version
+    until a second staff member approves the change (four-eyes rule)."""
+
+    __tablename__ = "change_requests"
+    entity_type: Mapped[str] = mapped_column(String(30))  # university|campus|programme|hostel|offering
+    entity_id: Mapped[str] = mapped_column(String(36), index=True)
+    kind: Mapped[str] = mapped_column(String(30))  # update|fees|tests|deadlines|rules
+    payload: Mapped[dict | list] = mapped_column(JSON)
+    before: Mapped[dict | list | None] = mapped_column(JSON)
+    author_id: Mapped[str] = mapped_column(String(36))
+    status: Mapped[str] = mapped_column(String(20), default="pending")  # pending|approved|rejected
+    reviewer_id: Mapped[str | None] = mapped_column(String(36))
+    review_note: Mapped[str | None] = mapped_column(Text)
+    summary: Mapped[str] = mapped_column(String(300), default="")
 
 
 class AuditLog(Base, IdMixin):

@@ -582,7 +582,25 @@ def validate_rule(rule_type: str, params: dict) -> dict:
     try:
         return model.model_validate(params).model_dump(mode="json")
     except ValidationError as exc:
-        raise RuleValidationError(str(exc)) from exc
+        raise RuleValidationError(_friendly(exc)) from exc
+
+
+def _friendly(exc: ValidationError) -> str:
+    """Short, plain messages for admins instead of the raw validation report."""
+    parts = []
+    for e in exc.errors():
+        field = ".".join(str(p) for p in e["loc"]) or "value"
+        kind = e["type"]
+        if kind == "missing":
+            msg = "is required"
+        elif kind == "extra_forbidden":
+            msg = "is not allowed for this rule"
+        elif kind == "too_short":
+            msg = "needs at least one choice"
+        else:
+            msg = e["msg"].removeprefix("Value error, ").lower()
+        parts.append(f"{field} {msg}")
+    return "; ".join(parts)
 
 
 def evaluate_rule(rule: Rule, ctx: Context) -> RuleResult | None:

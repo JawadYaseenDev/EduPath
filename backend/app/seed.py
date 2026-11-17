@@ -477,3 +477,17 @@ def seed_demo(db: Session) -> None:
                         db.add(m.RuleRow(rule_set=rs, rule_type=r["type"], params=r["params"],
                                          is_hard=r["hard"], source_id=source.id))
     db.commit()
+
+
+DEV_STAFF = [("admin@example.com", "super_admin"), ("verifier@example.com", "data_verifier")]
+
+
+def seed_dev_staff(db: Session, password: str) -> None:
+    """Development only: two staff accounts so the four-eyes review can be tried."""
+    from .security import hash_password
+
+    for email, role in DEV_STAFF:
+        if db.scalar(select(m.User).where(m.User.email == email)) is None:
+            db.add(m.User(email=email, password_hash=hash_password(password), role=role,
+                          email_verified=True))
+    db.commit()

@@ -20,7 +20,7 @@ class RegisterIn(_In):
 
 
 class LoginIn(_In):
-    email: EmailStr
+    email: str = Field(min_length=3, max_length=254)
     password: str = Field(max_length=128)
 
 

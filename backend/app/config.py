@@ -17,6 +17,9 @@ class Settings(BaseSettings):
     # "extended" or "strict_pdf" — see docs/RECOMMENDATION_ENGINE.md § 0.1
     result_mode: str = "extended"
     load_demo_data: bool = True
+    # Development only: when set, two staff accounts are created on start-up
+    # (admin@example.com = super_admin, verifier@example.com = data_verifier).
+    dev_staff_password: str | None = None
 
 
 @lru_cache

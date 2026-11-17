@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 from .api import admin, auth, catalogue, profile, recommendations, reference
 from .config import get_settings
 from .db import Base, SessionLocal, engine
-from .seed import seed_demo, seed_reference
+from .seed import seed_demo, seed_dev_staff, seed_reference
 
 
 def init_db() -> None:
@@ -16,8 +16,11 @@ def init_db() -> None:
     Base.metadata.create_all(engine)
     with SessionLocal() as db:
         seed_reference(db)
-        if get_settings().load_demo_data:
+        settings = get_settings()
+        if settings.load_demo_data:
             seed_demo(db)
+        if settings.environment == "development" and settings.dev_staff_password:
+            seed_dev_staff(db, settings.dev_staff_password)
 
 
 @asynccontextmanager

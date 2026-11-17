@@ -49,10 +49,17 @@ def categorise(results: list[RuleResult]) -> Category:
 def _evaluate_set(rule_set: RuleSet, student: StudentInput, vocab: Vocabulary) -> list[RuleResult]:
     ctx = Context(student=student, rule_set=rule_set, vocab=vocab)
     out = []
+    seen: set[tuple[str, str]] = set()
     for rule in rule_set.rules:
         result = evaluate_rule(rule, ctx)
-        if result is not None:
-            out.append(result)
+        if result is None:
+            continue
+        # Several rules can fail for the same reason (e.g. "this route is for DAE students").
+        key = (result.outcome.value, result.message)
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(result)
     return out
 
 

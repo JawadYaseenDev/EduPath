@@ -20,3 +20,7 @@ mobile/ios/Pods/
 # OS
 .DS_Store
 Thumbs.db
+
+# Admin
+admin/.dart_tool/
+admin/build/
