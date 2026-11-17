@@ -39,7 +39,8 @@ official sources through the admin panel.
 
 > **Quick way:** `powershell -ExecutionPolicy Bypass -File scripts\setup.ps1` once, then
 > `powershell -ExecutionPolicy Bypass -File scripts\start.ps1` every time.
-> **Another laptop:** see [docs/SETUP_ON_ANOTHER_LAPTOP.md](docs/SETUP_ON_ANOTHER_LAPTOP.md).
+> **Another laptop (nothing installed):** `powershell -ExecutionPolicy Bypass -File scripts\install-everything.ps1` —
+> details in [docs/SETUP_ON_ANOTHER_LAPTOP.md](docs/SETUP_ON_ANOTHER_LAPTOP.md).
 
 You need three PowerShell windows: one for the backend, one for the student app, one for the
 admin panel. Run each command from the project folder

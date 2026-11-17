@@ -14,7 +14,20 @@ Either:
 The zip does **not** contain `backend\.env` (passwords) or the local database. Each laptop
 makes its own.
 
-## 2. Install the tools (one time)
+## 2. One command installs everything (recommended)
+Open the extracted folder in File Explorer, click the address bar, type `powershell`, press
+Enter, and run:
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\install-everything.ps1
+```
+It shows what is missing, asks you to type **Y**, then installs Git, Google Chrome, uv
+(Python) and Flutter (about 2–3 GB, 20–40 minutes), and finally runs the project setup.
+It warns if Windows Smart App Control is on (see the table below). If it stops with an error,
+close the window, open a new one, and run the same command again — it skips what is done.
+
+Then go to step 4. (Steps 2b and 3 are the manual way, only needed if the script fails.)
+
+## 2b. Install the tools by hand (only if the script fails)
 1. **Google Chrome** — https://www.google.com/chrome/
 2. **Git for Windows** — https://git-scm.com/download/win (defaults are fine; Flutter needs it)
 3. **uv** (installs Python for you) — open PowerShell and run:
