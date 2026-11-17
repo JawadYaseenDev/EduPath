@@ -55,9 +55,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Icon(Icons.admin_panel_settings, size: 48, color: Theme.of(context).colorScheme.primary),
+                  Center(child: Image.asset('assets/logo.png', height: 72, semanticLabel: 'EduRecommend logo')),
                   const SizedBox(height: 8),
-                  Text('UniRah Admin', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headlineSmall),
+                  Text('EduRecommend Admin', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headlineSmall),
                   const Text('Staff only', textAlign: TextAlign.center),
                   const SizedBox(height: 24),
                   TextField(

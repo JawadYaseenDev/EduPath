@@ -24,3 +24,6 @@ Thumbs.db
 # Admin
 admin/.dart_tool/
 admin/build/
+
+# Packaged copies of the project
+dist/

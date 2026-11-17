@@ -1,4 +1,4 @@
-# UniRah — University Guidance App for Pakistan
+# EduRecommend — University Guidance App for Pakistan
 
 Helps students find universities and programmes they meet the published requirements for,
 based on their education, budget and location. Planning documents are in [`docs/`](docs/);
@@ -36,6 +36,10 @@ official sources through the admin panel.
 ---
 
 ## Run everything on your laptop (step by step)
+
+> **Quick way:** `powershell -ExecutionPolicy Bypass -File scripts\setup.ps1` once, then
+> `powershell -ExecutionPolicy Bypass -File scripts\start.ps1` every time.
+> **Another laptop:** see [docs/SETUP_ON_ANOTHER_LAPTOP.md](docs/SETUP_ON_ANOTHER_LAPTOP.md).
 
 You need three PowerShell windows: one for the backend, one for the student app, one for the
 admin panel. Run each command from the project folder
@@ -84,7 +88,8 @@ admin panel. Run each command from the project folder
 - **Run tests**: `cd backend; uv run python -m pytest` · `cd mobile; flutter test` ·
   `cd admin; flutter test`.
 - **Hot reload**: while `flutter run` is open, press `r` after changing Dart code.
-- **Android phone / emulator**: install Android Studio (it installs the Android SDK), then
+- **Android emulator**: full step-by-step guide in
+  [docs/ANDROID_EMULATOR_SETUP.md](docs/ANDROID_EMULATOR_SETUP.md). In short: install Android Studio (it installs the Android SDK), then
   `cd mobile; flutter run`. The emulator reaches the backend at `10.0.2.2:8000`
   automatically; a real phone needs `--dart-define=API_BASE_URL=http://<your laptop IP>:8000`
   and the backend started with `--host 0.0.0.0`.

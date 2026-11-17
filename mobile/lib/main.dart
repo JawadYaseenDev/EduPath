@@ -12,16 +12,16 @@ void main() {
     WidgetsFlutterBinding.ensureInitialized();
     SemanticsBinding.instance.ensureSemantics();
   }
-  runApp(const ProviderScope(child: UniRahApp()));
+  runApp(const ProviderScope(child: EduRecommendApp()));
 }
 
-class UniRahApp extends ConsumerWidget {
-  const UniRahApp({super.key});
+class EduRecommendApp extends ConsumerWidget {
+  const EduRecommendApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
-      title: 'UniRah',
+      title: 'EduRecommend',
       debugShowCheckedModeBanner: false,
       theme: buildTheme(Brightness.light),
       darkTheme: buildTheme(Brightness.dark),

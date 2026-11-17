@@ -1,3 +1,3 @@
-# unirah_admin
+# EduRecommend admin panel
 
 A new Flutter project.

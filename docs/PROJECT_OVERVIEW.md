@@ -1,6 +1,6 @@
 # Project Overview
 
-> Working name: **UniRah** (placeholder — "Rah" means "path". Change it any time.)
+> Name: **EduRecommend**. Logo: a winding road leading to a graduation cap (`branding/`).
 > Status: **Planning — not approved for implementation yet.**
 > Date: 18 November 2026
 

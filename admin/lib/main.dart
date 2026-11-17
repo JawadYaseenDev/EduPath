@@ -83,7 +83,7 @@ class AdminApp extends ConsumerWidget {
       inputDecorationTheme: const InputDecorationTheme(border: OutlineInputBorder()),
     );
     return MaterialApp.router(
-      title: 'UniRah Admin',
+      title: 'EduRecommend Admin',
       debugShowCheckedModeBanner: false,
       theme: theme(Brightness.light),
       darkTheme: theme(Brightness.dark),
@@ -122,7 +122,7 @@ class _Shell extends ConsumerWidget {
             labelType: NavigationRailLabelType.all,
             leading: Padding(
               padding: const EdgeInsets.symmetric(vertical: 12),
-              child: Icon(Icons.admin_panel_settings, color: Theme.of(context).colorScheme.primary, size: 32),
+              child: Image.asset('assets/logo.png', height: 36, semanticLabel: 'EduRecommend logo'),
             ),
             trailing: Expanded(
               child: Align(

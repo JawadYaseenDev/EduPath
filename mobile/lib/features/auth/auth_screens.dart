@@ -11,16 +11,15 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context).textTheme;
-    final s = Theme.of(context).colorScheme;
     return Scaffold(
       body: SafeArea(
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 480),
             child: ListView(padding: const EdgeInsets.all(24), shrinkWrap: true, children: [
-              Icon(Icons.school, size: 72, color: s.primary),
+              Center(child: Image.asset('assets/logo.png', height: 112, semanticLabel: 'EduRecommend logo')),
               const SizedBox(height: 16),
-              Text('UniRah', textAlign: TextAlign.center, style: t.displaySmall),
+              Text('EduRecommend', textAlign: TextAlign.center, style: t.displaySmall),
               const SizedBox(height: 8),
               Text('Find universities and programmes in Pakistan that match your education, '
                   'budget and location.',

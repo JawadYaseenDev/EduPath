@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Student app (choose device bottom-right)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "mobile",
+      "program": "lib/main.dart"
+    },
+    {
+      "name": "Admin panel (Chrome)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "admin",
+      "program": "lib/main.dart",
+      "deviceId": "chrome",
+      "args": ["--web-port", "5174"]
+    }
+  ]
+}

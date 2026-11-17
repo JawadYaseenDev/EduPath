@@ -21,6 +21,20 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/logo.png
+
+# Browser icons: regenerate with `dart run flutter_launcher_icons` after changing branding/.
+flutter_launcher_icons:
+  image_path: "../branding/logo-1024.png"
+  android: false
+  ios: false
+  web:
+    generate: true
+    image_path: "../branding/logo-1024.png"
+    background_color: "#0F6E56"
+    theme_color: "#0F6E56"

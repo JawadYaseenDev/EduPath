@@ -18,7 +18,7 @@ class HomeScreen extends ConsumerWidget {
     final t = Theme.of(context).textTheme;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('UniRah')),
+      appBar: AppBar(title: const Text('EduRecommend')),
       body: RefreshIndicator(
         onRefresh: () async {
           ref.invalidate(profileProvider);
