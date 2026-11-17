@@ -38,6 +38,7 @@ from ..schemas_admin import (
 from ..security import hash_password, password_problem, require_role
 from ..services import admin as svc
 from ..services import catalogue
+from ..services.change_summary import describe_changes
 from ..services.profile import vocabulary
 
 router = APIRouter(prefix="/v1/admin", tags=["admin"])
@@ -332,9 +333,20 @@ def offering_detail(offering_id: str, _: m.User = Depends(any_staff),
     }
 
 
+def _id_names(db: Session) -> dict[str, str]:
+    names = {s.id: s.title for s in db.scalars(select(m.Source))}
+    names.update({c.id: c.name for c in db.scalars(select(m.City))})
+    return names
+
+
+def _differences(db: Session, cr: m.ChangeRequest, vocab=None, names=None) -> list[dict]:
+    return describe_changes(cr.kind, cr.before, cr.payload, vocab or vocabulary(db),
+                            names if names is not None else _id_names(db))
+
+
 def _change_detail(db: Session, change_id: str) -> dict:
     cr = db.get(m.ChangeRequest, change_id)
-    return {"payload": cr.payload, "before": cr.before}
+    return {"payload": cr.payload, "before": cr.before, "differences": _differences(db, cr)}
 
 
 @router.put("/offerings/{offering_id}")
@@ -478,6 +490,8 @@ def review_queue(_: m.User = Depends(any_staff), db: Session = Depends(get_db)):
     changes = db.scalars(select(m.ChangeRequest).where(m.ChangeRequest.status == "pending")
                          .order_by(m.ChangeRequest.created_at)).all()
     names = _user_names(db, [r["edited_by"] for r in records] + [c.author_id for c in changes])
+    vocab = vocabulary(db)
+    id_names = _id_names(db)
     for r in records:
         r["edited_by_email"] = names.get(r["edited_by"])
     return {
@@ -487,6 +501,7 @@ def review_queue(_: m.User = Depends(any_staff), db: Session = Depends(get_db)):
             "summary": c.summary, "author_id": c.author_id,
             "author_email": names.get(c.author_id),
             "created_at": c.created_at.isoformat(), "before": c.before, "payload": c.payload,
+            "differences": _differences(db, c, vocab, id_names),
             "label": _record_label(db, c.entity_type, svc.get_entity(db, c.entity_type, c.entity_id)),
         } for c in changes],
     }

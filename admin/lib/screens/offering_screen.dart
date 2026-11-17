@@ -1216,16 +1216,26 @@ class ChangeCard extends ConsumerWidget {
                 'Proposed by ${change['author_email']} · ${shortDate(change['created_at'] as String?)}',
                 style: Theme.of(context).textTheme.bodySmall,
               ),
-            const SizedBox(height: 8),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                box('Now (published)', change['before']),
-                const SizedBox(width: 12),
-                box('Proposed', change['payload']),
-              ],
+            const SizedBox(height: 12),
+            _Differences(((change['differences'] as List?) ?? const []).cast<Json>()),
+            // Full data stays available for careful checks, but folded away.
+            Theme(
+              data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+              child: ExpansionTile(
+                tilePadding: EdgeInsets.zero,
+                title: Text('Show full data', style: Theme.of(context).textTheme.labelLarge),
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      box('Now (published)', change['before']),
+                      const SizedBox(width: 12),
+                      box('Proposed', change['payload']),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 8),
             Wrap(
               spacing: 8,
               children: [
@@ -1260,6 +1270,73 @@ class ChangeCard extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Only what changes, one row each: where · what · before → after.
+class _Differences extends StatelessWidget {
+  const _Differences(this.rows);
+  final List<Json> rows;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = Theme.of(context).colorScheme;
+    final t = Theme.of(context).textTheme;
+    if (rows.isEmpty) {
+      return Text('No differences from the published version.', style: t.bodyMedium);
+    }
+    Widget value(String text, {required bool after}) => Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: after ? s.primaryContainer : s.errorContainer.withValues(alpha: 0.6),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: after ? s.onPrimaryContainer : s.onErrorContainer,
+          decoration: after ? null : TextDecoration.lineThrough,
+        ),
+      ),
+    );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('${rows.length} change${rows.length == 1 ? '' : 's'}', style: t.labelLarge),
+        const SizedBox(height: 6),
+        for (final r in rows)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 360,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(r['what'] as String, style: t.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
+                      Text(r['where'] as String, style: t.bodySmall),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Wrap(
+                    spacing: 8,
+                    runSpacing: 4,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      value(r['before'] as String, after: false),
+                      const Icon(Icons.arrow_forward, size: 18),
+                      value(r['after'] as String, after: true),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+      ],
     );
   }
 }

@@ -152,6 +152,8 @@ def test_edits_to_live_data_wait_for_review(client, editor, verifier):
     queue = client.get("/v1/admin/review", headers=verifier).json()
     change = next(c for c in queue["changes"] if c["entity_id"] == off)
     assert change["before"][0]["amount_pkr"] == 40000
+    assert change["differences"] == [{"where": "Fees", "what": "Tuition fee, per semester",
+                                      "before": "PKR 40,000", "after": "PKR 55,000"}]
     assert client.post(f"/v1/admin/changes/{change['id']}/approve", headers=editor).status_code == 403
     assert client.post(f"/v1/admin/changes/{change['id']}/approve", headers=verifier).status_code == 200
     assert public_fee() == 55000
