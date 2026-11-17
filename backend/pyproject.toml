@@ -1,0 +1,37 @@
+[project]
+name = "unirah-backend"
+version = "0.1.0"
+description = "Backend API and eligibility engine for the UniRah university guidance app"
+requires-python = ">=3.12"
+dependencies = [
+    "argon2-cffi>=25.1.0",
+    "email-validator>=2.4.0",
+    "fastapi>=0.163.2",
+    "pydantic-settings>=2.16.3",
+    "pyjwt>=2.15.1",
+    "sqlalchemy>=2",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[tool.uv]
+package = false
+no-binary-package = ["sqlalchemy"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.2.0",
+    "ruff>=0.17.5",
+]
+
+# Windows Smart App Control on the dev machine blocks SQLAlchemy's compiled
+# speed-ups, so install its pure-Python build. (Production on Linux can drop this.)
+[tool.uv.extra-build-variables]
+sqlalchemy = { DISABLE_SQLALCHEMY_CEXT = "1" }

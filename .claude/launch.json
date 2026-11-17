@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "backend",
+      "runtimeExecutable": "uv",
+      "runtimeArgs": ["run", "--directory", "backend", "python", "-m", "uvicorn", "app.main:app", "--port", "8000"],
+      "port": 8000
+    },
+    {
+      "name": "mobile-web",
+      "runtimeExecutable": "uv",
+      "runtimeArgs": ["run", "--directory", "backend", "python", "-m", "http.server", "5173", "--directory", "../mobile/build/web"],
+      "port": 5173
+    }
+  ]
+}

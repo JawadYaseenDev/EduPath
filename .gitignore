@@ -1,0 +1,22 @@
+# Python
+backend/.venv/
+backend/dev.db
+backend/.env
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+
+# Flutter / Dart
+mobile/.dart_tool/
+mobile/build/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/android/.gradle/
+mobile/android/local.properties
+mobile/ios/Pods/
+*.iml
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
