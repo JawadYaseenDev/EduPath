@@ -27,3 +27,6 @@ admin/build/
 
 # Packaged copies of the project
 dist/
+
+# Generated showcase (rebuild with tools/showcase/)
+/showcase/

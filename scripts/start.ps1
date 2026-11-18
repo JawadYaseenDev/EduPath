@@ -4,6 +4,25 @@
 # Close a window (or press Ctrl+C / q in it) to stop that part.
 
 $root = Split-Path -Parent $PSScriptRoot
+
+# Pick up tools installed after this window was opened.
+$env:Path = [Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' + [Environment]::GetEnvironmentVariable('Path', 'User')
+foreach ($extra in @("$env:USERPROFILE\.local\bin", "$env:USERPROFILE\flutter\bin")) {
+    if ((Test-Path $extra) -and ($env:Path -notlike "*$extra*")) { $env:Path += ";$extra" }
+}
+$missing = @('uv', 'flutter') | Where-Object { -not (Get-Command $_ -ErrorAction SilentlyContinue) }
+if ($missing) {
+    Write-Host "Not installed yet: $($missing -join ', ')." -ForegroundColor Red
+    Write-Host 'Run this first, type Y when asked, and wait for "Done!":' -ForegroundColor Yellow
+    Write-Host '   powershell -ExecutionPolicy Bypass -File scripts\install-everything.ps1' -ForegroundColor Yellow
+    exit 1
+}
+if (-not (Test-Path "$root\backend\.venv")) {
+    Write-Host 'The project is not set up yet. Run this first:' -ForegroundColor Yellow
+    Write-Host '   powershell -ExecutionPolicy Bypass -File scripts\setup.ps1' -ForegroundColor Yellow
+    exit 1
+}
+
 $flutterPath = @("$env:USERPROFILE\flutter\bin", 'C:\flutter\bin', 'C:\src\flutter\bin') |
     Where-Object { Test-Path "$_\flutter.bat" } | Select-Object -First 1
 $addPath = if ($flutterPath) { "`$env:Path += ';$flutterPath'; " } else { '' }
